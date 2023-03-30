@@ -28,7 +28,7 @@ def search_pdf_link(pdf_link, search_string):
     # Open the PDF file
     with open(TEMP_PDF_NAME, "rb") as f:
         # Read the PDF file using PyPDF2
-        pdf_reader = PyPDF2.PdfFileReader(f)
+        pdf_reader = PyPDF2.PdfReader(f)
 
         # Check each page for the search string
         for page_num in range(pdf_reader.getNumPages()):

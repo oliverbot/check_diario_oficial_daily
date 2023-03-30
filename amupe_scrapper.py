@@ -65,8 +65,8 @@ def send_email(pdf_link):
         print(TEMP_IMG_NAME)
 
         yag = yagmail.SMTP(SENDER_EMAIL_USERNAME, SENDER_EMAIL_PASSWORD)
-        subject = "Notificação: Ralycia foi citada no Diário Oficial."
-        contents = 'O nome de Ralycia foi citado no diário oficial. \n Segue em anexo o PDF com a página em que o nome foi citado.'
+        subject = f"Notificação: {SEARCH_STRING} foi citada no Diário Oficial."
+        contents = f'O nome de {SEARCH_STRING} foi citado no diário oficial. \n Segue em anexo o PDF com a página em que o nome foi citado.'
         yag.send(to=RECEIVER_EMAIL, subject=subject, contents=contents, attachments=TEMP_IMG_NAME)
 
         print("Email notification sent.")

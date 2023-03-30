@@ -1,0 +1,31 @@
+name: Checagem Automática
+
+on:
+  schedule:
+    - cron: "0 15 * * 1-5"
+
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  diario-oficial-scrapper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixando repositório
+        uses: actions/checkout@v2
+      - name: Configurando Python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: '3.11'
+      - name: Instalando dependências
+        run: pip install -r requirements.txt
+      - name: Procurando o Diário Oficial pra ver se o nome foi mencionado...
+        env:
+            SENDER_EMAIL_USERNAME: ${{ secrets.SENDER_EMAIL_USERNAME }}
+            SENDER_EMAIL_PASSWORD: ${{ secrets.SENDER_EMAIL_PASSWORD }}
+            EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+            RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+            SEARCH_STRING: ${{ secrets.SEARCH_STRING }}
+        run: python amupe_scrapper.py

@@ -77,10 +77,11 @@ def main():
     
     pdf_link = get_current_pdf_link()
     send_email(pdf_link)
-    
 
     os.remove(TEMP_PDF_NAME)
-    os.remove(TEMP_IMG_NAME)
+
+    if os.path.exists(TEMP_IMG_NAME):
+        os.remove(TEMP_IMG_NAME)
 
 if __name__ == "__main__":
     main()

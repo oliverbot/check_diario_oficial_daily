@@ -44,7 +44,7 @@ def search_pdf_link(pdf_link, search_string):
                 print(f"Encontrado na página {page_num + 1}.")
 
                 global found_page_num # This is needed to modify the global variable
-                found_page_num = page_num
+                found_page_num = page_num + 1
 
                 wrt = PdfFileWriter()
                 wrt.addPage(page)

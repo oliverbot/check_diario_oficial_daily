@@ -20,6 +20,8 @@ TEMP_PDF_NAME = 'tempPDF.pdf'
 
 SEARCH_STRING = os.environ.get('SEARCH_STRING')
 
+found_page_num = 0
+
 
 def search_pdf_link(pdf_link, search_string):
     # Download the PDF file
@@ -32,17 +34,29 @@ def search_pdf_link(pdf_link, search_string):
 
         # Check each page for the search string
         for page_num in range(pdf_reader.getNumPages()):
+
             page = pdf_reader.getPage(page_num)
+
             text = page.extractText().lower()
             search_string = search_string.lower()
+
             if search_string in text:
+                print(f"Encontrado na página {page_num + 1}.")
+
+                global found_page_num # This is needed to modify the global variable
+                found_page_num = page_num
+
                 wrt = PdfFileWriter()
                 wrt.addPage(page)
+
                 r = io.BytesIO()
                 wrt.write(r)
+
                 images = convert_from_bytes(r.getvalue()) # poppler_path=r'C:\poppler\Library\bin'
                 images[0].save(TEMP_IMG_NAME)
+
                 print("Salvando a imagem...")
+
                 return True
 
     # If the search string was not found, return False
@@ -66,7 +80,7 @@ def send_email(pdf_link):
 
         yag = yagmail.SMTP(SENDER_EMAIL_USERNAME, SENDER_EMAIL_PASSWORD)
         subject = f"Notificação: {SEARCH_STRING} foi citada no Diário Oficial."
-        contents = f'O nome de {SEARCH_STRING} foi citado no diário oficial. \n Segue em anexo o PDF com a página em que o nome foi citado.'
+        contents = f'O nome de {SEARCH_STRING} foi citado no diário oficial. \n Segue em anexo uma imagem da página {found_page_num}, onde o nome foi citado.'
         yag.send(to=RECEIVER_EMAIL, subject=subject, contents=contents, attachments=TEMP_IMG_NAME)
 
         print("Email notification sent.")

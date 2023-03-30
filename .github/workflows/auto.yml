@@ -20,6 +20,8 @@ jobs:
           python-version: '3.11'
       - name: Instalando dependências
         run: pip install -r requirements.txt
+      - name: Instalando poppler
+        run: sudo apt-get install poppler-utils -y && export PATH=$PATH:/usr/local/bin/poppler-utils
       - name: Procurando o Diário Oficial pra ver se o nome foi mencionado...
         env:
             SENDER_EMAIL_USERNAME: ${{ secrets.SENDER_EMAIL_USERNAME }}

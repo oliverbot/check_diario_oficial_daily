@@ -15,8 +15,8 @@ EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL')
 
-TEMP_IMG_NAME = './temp/tempIMG.jpg'
-TEMP_PDF_NAME = './temp/tempPDF.pdf'
+TEMP_IMG_NAME = 'tempIMG.jpg'
+TEMP_PDF_NAME = 'tempPDF.pdf'
 
 SEARCH_STRING = os.environ.get('SEARCH_STRING')
 
@@ -40,7 +40,7 @@ def search_pdf_link(pdf_link, search_string):
                 wrt.addPage(page)
                 r = io.BytesIO()
                 wrt.write(r)
-                images = convert_from_bytes(r.getvalue())
+                images = convert_from_bytes(r.getvalue()) # poppler_path=r'C:\poppler\Library\bin'
                 images[0].save(TEMP_IMG_NAME)
                 print("Salvando a imagem...")
                 return True
